@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const mongoUrl = 'mongodb://localhost/bloglist'
+// const mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost/bloglist'
+const mongoUrl = process.env.MONGODB_URI
 mongoose.connect(mongoUrl)
   .then(() => {
       console.log('connected to MongoDB')

@@ -1,0 +1,33 @@
+GET http://localhost:3003/api/users HTTP/1.1
+
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "quan",
+    "name": "Quan",
+    "password": "Test123"
+}
+
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "username": "test",
+    "name": "TEST",
+    "password": "Test123"
+}
+
+###
+DELETE http://localhost:3003/api/users HTTP/1.1
+
+###
+POST http://localhost:3003/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "quan",
+    "password": "Test123"
+}

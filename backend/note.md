@@ -1,0 +1,1 @@
+- blogs aren't filled in user model

@@ -56,21 +56,8 @@ blogsRouter.delete('/', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response)  => {
   try {
-    // why doesn't userExtractor work here?
-    // how to send response 404 and redirect to homepage?
-
     const blog = await Blog.findById(request.params.id)
 
-    // const user = request.user 
-    // if (user.id.toString() === blog.user.toString()) {
-    //   response.status(404).json(
-    //     await Blog.deleteOne({_id: request.params.id})
-    //   )
-    // } else {
-    //   response.status(401).json({
-    //     error: 'not the owner'
-    //   })
-    // }
     response.status(200).json(
       await Blog.deleteOne({_id: request.params.id})
     )
@@ -99,7 +86,7 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
         error: 'please log in'
       })
     }
-  } catch(error) {blogs
+  } catch(error) {
     response.status(400).json({
       error: error.message
     })

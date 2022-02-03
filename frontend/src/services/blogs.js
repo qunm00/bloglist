@@ -31,8 +31,7 @@ const remove = async (event) => {
   const message = `Remove blog` 
 
   if (window.confirm(message)) {
-    const response = await axios.delete(`${baseUrl}/${event.target.id}`, {}, config)
-    console.log(response.data)
+    await axios.delete(`${baseUrl}/${event.target.id}`, {}, config)
   }
 }
 
@@ -40,8 +39,7 @@ const updateLikes = async (event) => {
   const config = {
     headers: { Authorization: token }
   }
-  const response = await axios.put(`${baseUrl}/${event.target.id}`, {}, config)
-  console.log(response.data)
+  await axios.put(`${baseUrl}/${event.target.id}`, {}, config)
 }
 
 export default { 

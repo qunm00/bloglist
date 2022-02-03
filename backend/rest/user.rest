@@ -15,6 +15,16 @@ POST http://localhost:3003/api/users HTTP/1.1
 content-type: application/json
 
 {
+    "username": "admin",
+    "name": "Admin",
+    "password": "admin"
+}
+
+###
+POST http://localhost:3003/api/users HTTP/1.1
+content-type: application/json
+
+{
     "username": "test",
     "name": "TEST",
     "password": "Test123"

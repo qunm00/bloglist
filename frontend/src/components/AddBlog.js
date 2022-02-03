@@ -12,7 +12,6 @@ function AddBlog() {
   const [message, setMessage] = useState(null)
 
   const inputHandler = (event) => {
-    console.log(value)
     setValue({
       ...value,
       [event.target.name]: event.target.value

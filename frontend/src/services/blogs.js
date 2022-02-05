@@ -10,10 +10,7 @@ const setToken = newToken => {
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
-  return response 
-
-  // const request = axios.get(baseUrl)
-  // return request.then(response => response.data)
+  return response.data
 }
 
 const create = async (newObject) => {

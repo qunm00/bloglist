@@ -1,7 +1,6 @@
-import React from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({blog}) => {
+const Blog = ({ blog }) => {
   return (
   <>
     <p>{blog.url}</p>

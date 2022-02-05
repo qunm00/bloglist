@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import blogService from '../services/blogs'
 import Notification from './Notification'
 
-function AddBlog() {
+const AddBlog = () => {
   const [value, setValue] = useState({
     title: '',
     author: '',
-    url: '',
+    url: ''
   })
 
   const [message, setMessage] = useState(null)
@@ -22,11 +22,11 @@ function AddBlog() {
     event.preventDefault()
     try {
       const response = await blogService.create({
-        ...value 
+        ...value
       })
-      setMessage(`successfully created ${response.title} written by ${response.author}`)
+      setMessage(`Successfully created ${response.title} written by ${response.author}`)
       setInterval(() => setMessage(null), 5000)
-    } catch(error) {
+    } catch (error) {
       console.log(error)
       setMessage('fail to create post')
     }

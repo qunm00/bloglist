@@ -9,13 +9,16 @@ const setToken = newToken => {
 }
 
 const getAll = async () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+  const response = await axios.get(baseUrl)
+  return response 
+
+  // const request = axios.get(baseUrl)
+  // return request.then(response => response.data)
 }
 
 const create = async (newObject) => {
   const config = {
-    headers: { Authorization: token}
+    headers: { Authorization: token }
   }
 
   const response = await axios.post(baseUrl, newObject, config)
@@ -27,9 +30,7 @@ const remove = async (event) => {
     headers: { Authorization: token }
   }
 
-  // add name blog
-  const message = `Remove blog` 
-
+  const message = `Remove blog`
   if (window.confirm(message)) {
     await axios.delete(`${baseUrl}/${event.target.id}`, {}, config)
   }
@@ -39,13 +40,17 @@ const updateLikes = async (event) => {
   const config = {
     headers: { Authorization: token }
   }
+
   await axios.put(`${baseUrl}/${event.target.id}`, {}, config)
 }
 
-export default { 
+
+const exportedObject = {
   getAll,
   create,
   setToken,
   updateLikes,
   remove
- }
+}
+
+export default exportedObject

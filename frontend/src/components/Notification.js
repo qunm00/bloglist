@@ -1,14 +1,14 @@
-import React from 'react'
-
-function Notification({message}) {
+const Notification = ({ message }) => {
   return (
     <>
-    {message ?
-    <>
-      <p>{message}</p>
-    </>
-    : null
-    }
+      {
+        message
+        ?
+        <>
+          <p>{message}</p>
+        </>
+        : null
+      }
     </>
   )
 }

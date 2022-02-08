@@ -15,13 +15,13 @@ usersRouter.post('/', async (request, response) => {
 
   if (!body.password) {
     return response.status(400).json({
-      error: 'password is required'
+      message: 'Password is required'
     })
   }
 
   if (body.password.length < 3) {
     return response.status(400).json({
-      error: 'password must be longer than or equal to 3 characters'
+      message: 'Password must be longer than or equal to 3 characters'
     })
   }
 
@@ -38,8 +38,13 @@ usersRouter.post('/', async (request, response) => {
     response.json(savedUser)
   } catch (error) {
     if (error.name === 'ValidationError') {
-      response.status(400).json({
-        error: error.message
+      if (error.message.includes("unique")) {
+        return response.status(400).json({
+          message: "Username already exists"
+        })
+      }
+      return response.status(400).json({
+        message: error.message
       })
     }
   }
@@ -48,12 +53,12 @@ usersRouter.post('/', async (request, response) => {
 usersRouter.delete('/', async (request, response) => {
   try {
     const result = await User.deleteMany({})
-    response.status(404).json({
+    return response.status(404).json({
       result
     })
   } catch(error) {
-    response.status(400).json({
-      error: error.message
+    return response.status(400).json({
+      message: error.message
     })
   }
 })
@@ -63,12 +68,12 @@ usersRouter.delete('/:id', async (request, response) => {
     const result = await User.deleteOne({
       _id: request.params.id
     })
-    response.status(404).json({
+    return response.status(404).json({
       result
     })
   } catch(error) {
-    response.status(400).json({
-      error: error.message
+    return response.status(400).json({
+      message: error.message
     })
   }
 

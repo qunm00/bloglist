@@ -1,4 +1,3 @@
-// why doesn't dotenv work in index?
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
@@ -13,9 +12,15 @@ loginRouter.post('/', async (request, response) => {
     ? false
     : await bcrypt.compare(body.password, user.passwordHash)
 
-  if(!(user && passwordCorrect)) {
+  if (!user) {
     return response.status(401).json({
-      error: 'invalid username or password'
+      message: 'Username not found'
+    })
+  }
+
+  if(!passwordCorrect) {
+    return response.status(401).json({
+      message: 'Invalid password'
     })
   }
   
@@ -26,7 +31,7 @@ loginRouter.post('/', async (request, response) => {
 
   const token = jwt.sign(userForToken, process.env.SECRET)
 
-  response
+  return response
     .status(200)
     .send({token, username: user.username, name: user.name})
 })

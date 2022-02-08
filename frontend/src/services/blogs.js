@@ -2,50 +2,51 @@ import axios from 'axios'
 
 const baseUrl = '/api/blogs'
 
-let token = null
-
-const setToken = newToken => {
-  token = `Bearer ${newToken}`
-}
-
 const getAll = async () => {
   const response = await axios.get(baseUrl)
   return response.data
 }
 
-const create = async (newObject) => {
+const getById = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
+  return response.data
+}
+
+const create = async (token, newObject) => {
   const config = {
-    headers: { Authorization: token }
+    headers: { Authorization: `Bearer ${token}` }
   }
 
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }
 
-const remove = async (event) => {
+const remove = async (token, id) => {
   const config = {
-    headers: { Authorization: token }
+    headers: { Authorization: `Bearer ${token}` }
   }
-
-  const message = `Remove blog`
-  if (window.confirm(message)) {
-    await axios.delete(`${baseUrl}/${event.target.id}`, {}, config)
-  }
+  await axios.delete(`${baseUrl}/${id}`, config)
 }
 
-const updateLikes = async (event) => {
+const update = async (token, id, content) => {
   const config = {
-    headers: { Authorization: token }
+    headers: { Authorization: `Bearer ${token}` }
   }
-
-  await axios.put(`${baseUrl}/${event.target.id}`, {}, config)
+  await axios.put(`${baseUrl}/${id}`, content, config)
 }
 
+const updateLikes = async (token, id) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  }
+  await axios.put(`${baseUrl}/${id}/updateLikes`, {}, config)
+}
 
 const exportedObject = {
   getAll,
+  getById,
   create,
-  setToken,
+  update,
   updateLikes,
   remove
 }

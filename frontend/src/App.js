@@ -1,59 +1,82 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+
 import Blog from './components/Blog'
 import Login from './components/Login'
-import AddBlog from './components/AddBlog'
+import BlogModal from './components/BlogModal'
 import blogService from './services/blogs'
-import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [modalVisibility, setModalVisibility] = useState(false)
+  const [editBlogId, setEditBlogId] = useState(null)
 
   const logoutHandler = () => {
     setUser(null)
-    blogService.setToken(null)
     window.localStorage.removeItem('loggedBlogUser')
   }
 
+  const createHandler = () => {
+    setModalVisibility(true)
+  }
+
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    let isMounted = true
+    blogService.getAll().then(blogs => {
+      if (isMounted) setBlogs(blogs)
+    })
+    return () => isMounted = false
   }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
+
     if (loggedUserJSON) {
       const loggedUserData = JSON.parse(loggedUserJSON)
       setUser(loggedUserData)
-      blogService.setToken(loggedUserData.token)
     }
   }, [])
 
   return (
     <div>
-      {!user ?
-      <Login setUser={setUser}/> :
+      {!user 
+      ? <Login setUser={setUser}/> 
+      :
       <>
-        <h2>blogs</h2>
-        <div>
-          <p>{user.username}</p>
-          <button onClick={logoutHandler}>Logout</button>
-        </div>
-        <br/>
-        <Togglable showButton="Create a blog" hideButton="Cancel">
-          <AddBlog />
-        </Togglable>
-        <br/>
-        {blogs.sort((first, second) => second.likes - first.likes).map(blog =>
-          <div key={blog.id}>
-            <h3>{blog.title}</h3>
-            <Togglable showButton="View" hideButton="Hide">
-              <Blog blog={blog} />
-            </Togglable>
-            <hr/>
+        <BlogModal 
+          editBlogId={editBlogId}
+          setEditBlogId={setEditBlogId}
+          modalVisibility={modalVisibility} 
+          setModalVisibility={setModalVisibility} 
+        />
+        <nav className="lg:flex lg:justify-between items-center bg-slate-200 p-6">
+          <div className="items-center text-black mr-6">
+            <span className="font-semibold text-xl tracking-tight">
+              World's Next Big Blog
+            </span>
           </div>
-        )}
+          <div>
+            <p>Logged in as {user.data.username}</p>
+          </div>
+          <div className="flex justify-between">
+            <button className="button bg-indigo-500 hover:bg-indigo-700" onClick={createHandler}>Create a new blog post</button>
+            <button className="button bg-orange-500 hover:bg-orange-700" onClick={logoutHandler}>Logout</button>
+          </div>
+        </nav>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {blogs.sort((first, second) => 
+            second.user.username
+              .toLowerCase()
+              .localeCompare(first.user.username.toLowerCase()))
+            .map(blog =>
+              <Blog 
+                key={blog.id}
+                blog={blog}
+                setModalVisibility={setModalVisibility}
+                setEditBlogId={setEditBlogId}
+              />
+          )}
+        </div>
       </>
       }
     </div>

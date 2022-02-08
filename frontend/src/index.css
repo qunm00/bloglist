@@ -1,3 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .button {
+    @apply 
+      text-white 
+      font-bold 
+      py-2 
+      px-6
+      shadow-lg
+      hover:-translate-y-0.5
+      hover:-translate-x-0.5
+      hover:shadow-slate-500
+      focus:opacity-50
+  }
+
+  .alert {
+    @apply
+      bg-red-100
+      border-red-400 
+      text-red-700 
+  }
+
+  .formHeader {
+    @apply
+      my-6
+      text-center
+      text-3xl
+      font-extrabold
+      text-gray-900
+  }
+
+  .formLabel {
+    @apply
+      block
+      text-gray-700
+      text-sm
+      font-bold
+      mb-2
+  }
+
+  .formInput {
+    @apply
+      shadow
+      appearance-none
+      border
+      rounded
+      w-full
+      py-2
+      px-3
+      text-gray-700
+      leading-tight
+  }
+
+  .success {
+    @apply
+      bg-green-100
+      border-green-400 
+      text-green-700 
+  }
+}

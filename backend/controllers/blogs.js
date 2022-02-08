@@ -26,8 +26,8 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
       const body = request.body
       const blog = new Blog({
         title: body.title,
-        author: body.author,
-        url: body.url,
+        author: user.username,
+        content: body.content,
         likes: body.like,
         user: user 
       })
@@ -37,7 +37,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
       )
     } else {
       response.status(401).json({
-        error: 'Unauthorized Access'
+        message: 'please log in'
       })
     }
 
@@ -48,21 +48,36 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   }
 })
 
-blogsRouter.delete('/', async (request, response) => {
-  response.status(200).json(
-    await Blog.deleteMany({})
-  )
+blogsRouter.delete('/', userExtractor, async (request, response) => {
+  const user = request.user
+  if (user) {
+    response.status(200).json(
+      await Blog.deleteMany({})
+    )
+  } else {
+    return response.status(401).json({
+      message: 'please log in'
+    })
+  }
+
 })
 
-blogsRouter.delete('/:id', async (request, response)  => {
+blogsRouter.delete('/:id', userExtractor, async (request, response)  => {
   try {
-    const blog = await Blog.findById(request.params.id)
+    const user = request.user
 
-    response.status(200).json(
-      await Blog.deleteOne({_id: request.params.id})
-    )
+    if (user) {
+      return response.status(200).json(
+        await Blog.deleteOne({_id: request.params.id})
+      )
+    } else {
+      return response.status(401).json({
+        message: 'please log in'
+      })
+    }
+
   } catch(error) {
-    response.status(400).json({
+    return response.status(400).json({
       error: error.message
     })
   }
@@ -71,10 +86,32 @@ blogsRouter.delete('/:id', async (request, response)  => {
 blogsRouter.put('/:id', userExtractor, async (request, response) => {
   try {
     const user = request.user
+    const body = request.body
+
+    if (user) {
+      return response.status(200).json(
+        await Blog.updateOne({
+          _id: request.params.id
+        }, {
+          title: body.title,
+          content: body.content
+        })
+      )
+    }
+  } catch (error) {
+    return response.status(400).json({
+      message: error.message
+    })
+  }
+})
+
+blogsRouter.put('/:id/updateLikes', userExtractor, async (request, response) => {
+  try {
+    const user = request.user
     const blog = await Blog.findById(request.params.id)
 
     if (user) {
-      response.status(200).json(
+      return response.status(200).json(
         await Blog.updateOne({
           _id: request.params.id
         }, {
@@ -82,13 +119,13 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
         })
       )
     } else {
-      response.status(403).json({
-        error: 'please log in'
+      return response.status(401).json({
+        message: 'please log in'
       })
     }
   } catch(error) {
-    response.status(400).json({
-      error: error.message
+    return response.status(400).json({
+      message: error.message
     })
   }
 })

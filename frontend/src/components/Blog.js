@@ -40,15 +40,13 @@ const Blog = ({
                     decoration-2
                     decoration-indigo-500
                   "
-                  onClick={() => {
-                    setShowAll(true)
-                  }}
+                  onClick={() => {setShowAll(true)}}
                 >
                   See more
                 </button>
               </p>
             : (showAll && blog.content.length > 50)
-              ? <p>{blog.content + "... "}
+              ? <p>{blog.content + " "}
                   <button
                     className="
                       underline 

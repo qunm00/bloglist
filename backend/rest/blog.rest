@@ -1,26 +1,23 @@
-GET http://localhost:3003/api/blogs HTTP/1.1
+###
+GET http://localhost:3003/api/blogs
 
 ###
+GET http://localhost:3003/api/blogs/6203c89b559d5cb061b31791
 
 ###
-POST http://localhost:3003/api/blogs HTTP/1.1
+POST http://localhost:3003/api/blogs
 content-type: application/json
 authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW4iLCJpZCI6IjYxOWI0N2IzM2EzODY4ZGQwYjI1OWU4YyIsImlhdCI6MTYzNzU2Njk1MX0.0ifLIyQc0O3e5XnQmPq2383TILwAhjz7NlthsXw4js0
 
 {
     "title": "new",
     "author": "Quan",
-    "url": "www.quan.com",
-    "likes": 100 
-
 }
 
 ###
 DELETE http://localhost:3003/api/blogs/619a5ac37ebb5db5bd8391e3
-authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW4iLCJpZCI6IjYxOWExNjRhOTVkZDc3MTZiNTE0Njk5OSIsImlhdCI6MTYzNzUwMzM4OX0.kP50PXUm9qEOKkOfGRrZye8punvLn4zSGkWy3WZa-Nw
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW4iLCJpZCI6IjYyMDNjODNlNTU5ZDVjYjA2MWIzMTcyYiIsImlhdCI6MTY0NDQxNTA1N30.2VcSoEHMhWFyfdhCX8z4tEbmxVdG1ldhNXrpiiVgOyc
 
 ###
 DELETE http://localhost:3003/api/blogs/
-
-###
-GET https://nmiquan-helsinki-bloglist.herokuapp.com/api/blogs HTTP/1.1
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW4iLCJpZCI6IjYyMDNjODNlNTU5ZDVjYjA2MWIzMTcyYiIsImlhdCI6MTY0NDQxNTA1N30.2VcSoEHMhWFyfdhCX8z4tEbmxVdG1ldhNXrpiiVgOyc

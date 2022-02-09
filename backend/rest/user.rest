@@ -1,7 +1,9 @@
-GET http://localhost:3003/api/users HTTP/1.1
+###
+GET http://localhost:3003/api/users
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW4iLCJpZCI6IjYyMDNjODNlNTU5ZDVjYjA2MWIzMTcyYiIsImlhdCI6MTY0NDQxNTA1N30.2VcSoEHMhWFyfdhCX8z4tEbmxVdG1ldhNXrpiiVgOyc
 
 ###
-POST http://localhost:3003/api/users HTTP/1.1
+POST http://localhost:3003/api/users
 content-type: application/json
 
 {
@@ -11,7 +13,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3003/api/users HTTP/1.1
+POST http://localhost:3003/api/users
 content-type: application/json
 
 {
@@ -21,7 +23,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3003/api/users HTTP/1.1
+POST http://localhost:3003/api/users
 content-type: application/json
 
 {
@@ -31,13 +33,6 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/users HTTP/1.1
-
-###
-POST http://localhost:3003/api/login HTTP/1.1
+DELETE http://localhost:3003/api/users/6203d01c4b755d810d7d08be
+authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InF1YW4iLCJpZCI6IjYyMDNjODNlNTU5ZDVjYjA2MWIzMTcyYiIsImlhdCI6MTY0NDQxNTA1N30.2VcSoEHMhWFyfdhCX8z4tEbmxVdG1ldhNXrpiiVgOyc
 content-type: application/json
-
-{
-    "username": "quan",
-    "password": "Test123"
-}

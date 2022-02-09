@@ -1,26 +1,35 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const userExtractor = require('../middlewares/userExtractor')
 
-usersRouter.get('/', async (request, response) => {
-  response.json(
-    await User
-      .find({})
-      .populate('blogs')
-    )
+usersRouter.get('/', userExtractor, async (request, response) => {
+  const user = request.user
+  if (user) {
+    response.json(
+      await User
+        .find({})
+        .populate('blogs')
+      )
+  } else {
+    response.status(401).json({
+      message: 'please log in'
+    })
+  }
+
 })
 
 usersRouter.post('/', async (request, response) => {
   const body = request.body
 
   if (!body.password) {
-    return response.status(400).json({
+    response.status(400).json({
       message: 'Password is required'
     })
   }
 
   if (body.password.length < 3) {
-    return response.status(400).json({
+    response.status(400).json({
       message: 'Password must be longer than or equal to 3 characters'
     })
   }
@@ -38,45 +47,53 @@ usersRouter.post('/', async (request, response) => {
     response.json(savedUser)
   } catch (error) {
     if (error.name === 'ValidationError') {
-      if (error.message.includes("unique")) {
-        return response.status(400).json({
-          message: "Username already exists"
-        })
-      }
-      return response.status(400).json({
+      response.status(400).json({
         message: error.message
       })
     }
   }
 })
 
-usersRouter.delete('/', async (request, response) => {
-  try {
-    const result = await User.deleteMany({})
-    return response.status(404).json({
-      result
-    })
-  } catch(error) {
-    return response.status(400).json({
-      message: error.message
+// usersRouter.delete('/', userExtractor, async (request, response) => {
+//   const user = request.user
+//   if (user) {
+//     try {
+//       const result = await User.deleteMany({})
+//       response.status(404).json({
+//         result
+//       })
+//     } catch(error) {
+//       response.status(400).json({
+//         message: error.message
+//       })
+//     }
+//   } else {
+//     response.status(401).json({
+//       message: 'please login'
+//     })
+//   }
+// })
+
+usersRouter.delete('/:id', userExtractor, async (request, response) => {
+  const user = request.user
+  if (user) {
+    try {
+      const result = await User.deleteOne({
+        _id: request.params.id
+      })
+      response.status(404).json({
+        result
+      })
+    } catch(error) {
+      response.status(400).json({
+        message: error.message
+      })
+    }
+  } else {
+    response.status(401).json({
+      message: 'please login'
     })
   }
-})
-
-usersRouter.delete('/:id', async (request, response) => {
-  try {
-    const result = await User.deleteOne({
-      _id: request.params.id
-    })
-    return response.status(404).json({
-      result
-    })
-  } catch(error) {
-    return response.status(400).json({
-      message: error.message
-    })
-  }
-
 })
 
 module.exports = usersRouter

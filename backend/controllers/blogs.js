@@ -11,11 +11,16 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.get('/:id', async (request, response) => {
-  response.status(200).json(
-    await Blog.find({
+  try {
+    const blog = await Blog.find({
       _id: request.params.id
     })
-  )
+    response.status(200).json(blog)
+  } catch (error) {
+    response.status(400).json({
+      message: error.message 
+    })
+  }
 })
 
 blogsRouter.post('/', userExtractor, async (request, response) => {
@@ -32,34 +37,40 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
         user: user 
       })
 
-      return response.status(201).json(
+      response.status(201).json(
         await Blog.create(blog)
       )
     } else {
-      return response.status(401).json({
+      response.status(401).json({
         message: 'please log in'
       })
     }
 
   } catch(error) {
-    return response.status(400).json({
-      error: error.message
+    response.status(400).json({
+      message: error.message
     })
   }
 })
 
 blogsRouter.delete('/', userExtractor, async (request, response) => {
   const user = request.user
-  if (user) {
-    response.status(200).json(
-      await Blog.deleteMany({})
-    )
-  } else {
-    return response.status(401).json({
-      message: 'please log in'
+  try {
+    if (user) {
+      response.status(200).json(
+        await Blog.deleteMany({})
+      )
+    } else {
+      response.status(401).json({
+        message: 'please log in'
+      })
+    }
+  } catch (error) {
+    response.status(400).json({
+      message: error.message
     })
   }
-
+  
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response)  => {
@@ -67,18 +78,18 @@ blogsRouter.delete('/:id', userExtractor, async (request, response)  => {
     const user = request.user
 
     if (user) {
-      return response.status(200).json(
+      response.status(200).json(
         await Blog.deleteOne({_id: request.params.id})
       )
     } else {
-      return response.status(401).json({
+      response.status(401).json({
         message: 'please log in'
       })
     }
 
   } catch(error) {
-    return response.status(400).json({
-      error: error.message
+    response.status(400).json({
+      message: error.message
     })
   }
 })
@@ -89,7 +100,7 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
     const body = request.body
 
     if (user) {
-      return response.status(200).json(
+      response.status(200).json(
         await Blog.updateOne({
           _id: request.params.id
         }, {
@@ -97,9 +108,13 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
           content: body.content
         })
       )
+    } else {
+      response.status(401).json({
+        message: 'please log in'
+      })
     }
   } catch (error) {
-    return response.status(400).json({
+    response.status(400).json({
       message: error.message
     })
   }
@@ -111,7 +126,7 @@ blogsRouter.put('/:id/updateLikes', userExtractor, async (request, response) => 
     const blog = await Blog.findById(request.params.id)
 
     if (user) {
-      return response.status(200).json(
+      response.status(200).json(
         await Blog.updateOne({
           _id: request.params.id
         }, {
@@ -119,12 +134,12 @@ blogsRouter.put('/:id/updateLikes', userExtractor, async (request, response) => 
         })
       )
     } else {
-      return response.status(401).json({
+      response.status(401).json({
         message: 'please log in'
       })
     }
   } catch(error) {
-    return response.status(400).json({
+    response.status(400).json({
       message: error.message
     })
   }

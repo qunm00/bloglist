@@ -31,6 +31,4 @@ app.use('/api/login', loginRouter)
 const errorHandler = require('./middlewares/errorHandler')
 app.use(errorHandler)
 
-console.log("app.js")
-
 module.exports = app

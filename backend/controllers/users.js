@@ -74,26 +74,26 @@ usersRouter.post('/', async (request, response) => {
 //   }
 // })
 
-usersRouter.delete('/:id', userExtractor, async (request, response) => {
-  const user = request.user
-  if (user) {
-    try {
-      const result = await User.deleteOne({
-        _id: request.params.id
-      })
-      response.status(404).json({
-        result
-      })
-    } catch(error) {
-      response.status(400).json({
-        message: error.message
-      })
-    }
-  } else {
-    response.status(401).json({
-      message: 'please login'
-    })
-  }
-})
+// usersRouter.delete('/:id', userExtractor, async (request, response) => {
+//   const user = request.user
+//   if (user) {
+//     try {
+//       const result = await User.deleteOne({
+//         _id: request.params.id
+//       })
+//       response.status(404).json({
+//         result
+//       })
+//     } catch(error) {
+//       response.status(400).json({
+//         message: error.message
+//       })
+//     }
+//   } else {
+//     response.status(401).json({
+//       message: 'please login'
+//     })
+//   }
+// })
 
 module.exports = usersRouter

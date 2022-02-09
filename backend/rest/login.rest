@@ -1,8 +1,18 @@
 ###
-POST http://localhost:3003/api/login HTTP/1.1
+POST http://localhost:3003/api/login
 content-type: application/json
 
 {
     "username": "abc",
     "password": ""
+}
+
+
+###
+POST https://nmiquan-helsinki-bloglist.herokuapp.com/api/login
+content-type: application/json
+
+{
+    "username": "quan",
+    "password": "Test123"
 }

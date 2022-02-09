@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost/bloglist'
-// const mongoUrl = process.env.MONGODB_URI
 mongoose.connect(mongoUrl)
   .then(() => {
       console.log('connected to MongoDB')
@@ -11,6 +10,7 @@ mongoose.connect(mongoUrl)
 
 const express = require('express')
 const app = express()
+app.use(express.static('build'))
 app.use(express.json())
 
 const cors = require('cors')

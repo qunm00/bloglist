@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import blogService from '../services/blogs'
 
 const Blog = ({ 
@@ -5,6 +6,7 @@ const Blog = ({
   setModalVisibility,
   setEditBlogId
 }) => {
+  const [showAll, setShowAll] = useState(blog.content.length < 50)
   const loggedInUser = window.localStorage.getItem('loggedBlogUser')
   const token = loggedInUser ? JSON.parse(loggedInUser).data.token : null
   const username = loggedInUser ? JSON.parse(loggedInUser).data.username : null
@@ -29,7 +31,37 @@ const Blog = ({
     <div className="m-5 p-5 border border-gray-200 rounded-sm shadow-lg">
       <div className="text-gray-900 font-bold text-xl mb-2">{blog.title}</div>
       <div className="mt-5">
-        <p>{blog.content}</p>
+        {
+          (!showAll && blog.content.length > 50)
+            ? <p>{blog.content.substring(0, 50) + "... "}
+                <button
+                  className="
+                    underline 
+                    decoration-2
+                    decoration-indigo-500
+                  "
+                  onClick={() => {
+                    setShowAll(true)
+                  }}
+                >
+                  See more
+                </button>
+              </p>
+            : (showAll && blog.content.length > 50)
+              ? <p>{blog.content + "... "}
+                  <button
+                    className="
+                      underline 
+                      decoration-2
+                      decoration-indigo-500
+                    "
+                    onClick={() => setShowAll(false)}
+                  >
+                    See less
+                  </button>
+                </p>
+              : <p>{blog.content}</p>
+        }
       </div>
       <div className="mt-10 mb-5">
         <p>written by {blog.user.username}</p>

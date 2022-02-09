@@ -32,17 +32,17 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
         user: user 
       })
 
-      response.status(201).json(
+      return response.status(201).json(
         await Blog.create(blog)
       )
     } else {
-      response.status(401).json({
+      return response.status(401).json({
         message: 'please log in'
       })
     }
 
   } catch(error) {
-    response.status(400).json({
+    return response.status(400).json({
       error: error.message
     })
   }

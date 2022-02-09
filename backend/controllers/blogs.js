@@ -53,31 +53,31 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   }
 })
 
-blogsRouter.delete('/', userExtractor, async (request, response) => {
-  const user = request.user
-  try {
-    if (user) {
-      response.status(200).json(
-        await Blog.deleteMany({})
-      )
-    } else {
-      response.status(401).json({
-        message: 'please log in'
-      })
-    }
-  } catch (error) {
-    response.status(400).json({
-      message: error.message
-    })
-  }
-  
-})
+// blogsRouter.delete('/', userExtractor, async (request, response) => {
+//   const user = request.user
+//   try {
+//     if (user) {
+//       response.status(200).json(
+//         await Blog.deleteMany({})
+//       )
+//     } else {
+//       response.status(401).json({
+//         message: 'please log in'
+//       })
+//     }
+//   } catch (error) {
+//     response.status(400).json({
+//       message: error.message
+//     })
+//   }
+// })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response)  => {
   try {
     const user = request.user
+    const blog = await Blog.findById(request.params.id)
 
-    if (user) {
+    if (user._id.toString() === blog.user.toString()) {
       response.status(200).json(
         await Blog.deleteOne({_id: request.params.id})
       )
@@ -98,8 +98,9 @@ blogsRouter.put('/:id', userExtractor, async (request, response) => {
   try {
     const user = request.user
     const body = request.body
+    const blog = await Blog.findById(request.params.id)
 
-    if (user) {
+    if (user._id.toString() === blog.user.toString()) {
       response.status(200).json(
         await Blog.updateOne({
           _id: request.params.id
